@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <malloc.h>
+#define dataType int
+typedef struct stack
+{
+	dataType data;
+	struct stack *next;
+}stackNode;
+stackNode *initStack(void)
+{
+	stackNode *top;
+	top= (stackNode *)malloc(sizeof(stackNode));
+	top->data = 0;
+	top->next = NULL;
+	return top;
+}
+int stackEmpty(stackNode *top)
+{
+	if (top->next == NULL)
+		return 1;
+	else
+		return 0;
+}
+void pushStack(stackNode *top,dataType e)
+{
+	stackNode *p;
+	p = (stackNode *)malloc(sizeof(stackNode));
+	p->data = e;
+	p->next = top->next;
+	top->data++;
+	top->next = p;
+}
+void popStack(stackNode *top)
+{
+	stackNode *p;
+	p = top->next;
+	if (p)
+	{
+		top->next = p->next;
+		top->data--;
+		free(p);
+	}
+	else
+	{
+		printf("the stack is empty!");
+	}
+}
+int lenStack(stackNode *top)
+{
+	return top->data;
+}
+int getTop(stackNode *top)
+{
+	if (top->next)
+	{
+		return top->next->data;
+	}
+	else
+	{
+		printf("the stack is empty!");
+	}
+}
+void destroyStack(stackNode *top)
+{
+	while (top->next)
+	{
+		stackNode *p;
+		p = top->next;
+		top->next = p->next;
+		free(p);
+	}
+	if (!(top->next))
+	{
+		free(top);
+		printf("the stack has been destroyed!");
+	}
+ 
+}
+int main(void) {
+	stackNode *top;
+	int f;
+	top = initStack();
+	printf("%d\n",top->data);
+	f = stackEmpty(top);
+	printf("%d\n",f);
+	pushStack(top,5);
+	pushStack(top,3);
+	pushStack(top,12);
+	printf("%d\n",getTop(top));
+ 
+	destroyStack(top);
+	return 0;
+}
